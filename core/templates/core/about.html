@@ -1,0 +1,136 @@
+{% extends 'core/base.html' %}
+
+{% block title %}О компании - Мармерадости{% endblock %}
+
+{% block content %}
+<!-- Хлебные крошки -->
+<nav aria-label="breadcrumb" class="bg-pink-light py-3">
+    <div class="container">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="{% url 'core:home' %}" class="text-decoration-none">Главная</a></li>
+            <li class="breadcrumb-item active">О компании</li>
+        </ol>
+    </div>
+</nav>
+
+<!-- О компании -->
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-5 fw-bold brand-font text-primary-custom mb-4">О компании "Мармерадости"</h1>
+                <p class="lead mb-4">Мы — ведущий производитель качественного мармелада, который уже более 10 лет радует своих партнеров и их клиентов.</p>
+                <p class="mb-4">Наша миссия — создавать не просто сладости, а настоящие произведения кондитерского искусства, которые приносят радость и удовлетворение каждому, кто их пробует.</p>
+                
+                <div class="row text-center mb-4">
+                    <div class="col-md-4 mb-3">
+                        <div class="border border-primary-custom rounded p-3">
+                            <h3 class="text-primary-custom brand-font">10+</h3>
+                            <p class="mb-0 text-muted">Лет на рынке</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="border border-primary-custom rounded p-3">
+                            <h3 class="text-primary-custom brand-font">50+</h3>
+                            <p class="mb-0 text-muted">Видов мармелада</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="border border-primary-custom rounded p-3">
+                            <h3 class="text-primary-custom brand-font">500+</h3>
+                            <p class="mb-0 text-muted">Довольных партнеров</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="about-image text-center">
+                    <i class="bi bi-emoji-sunglasses bear-icon-large"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Наши ценности -->
+<section class="py-5 bg-pink-light">
+    <div class="container">
+        <h2 class="text-center section-title text-primary-custom">Наши ценности</h2>
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card card-hover h-100">
+                    <div class="card-body text-center p-4">
+                        <i class="bi bi-shield-check text-primary-custom fs-1 mb-3"></i>
+                        <h4 class="text-primary-custom">Качество</h4>
+                        <p class="text-muted">Мы используем только натуральные ингредиенты и современное оборудование. Каждая партия проходит строгий контроль качества.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card card-hover h-100">
+                    <div class="card-body text-center p-4">
+                        <i class="bi bi-lightbulb text-primary-custom fs-1 mb-3"></i>
+                        <h4 class="text-primary-custom">Инновации</h4>
+                        <p class="text-muted">Постоянно разрабатываем новые вкусы и форматы, следим за мировыми трендами и адаптируем их для российского рынка.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card card-hover h-100">
+                    <div class="card-body text-center p-4">
+                        <i class="bi bi-people text-primary-custom fs-1 mb-3"></i>
+                        <h4 class="text-primary-custom">Партнерство</h4>
+                        <p class="text-muted">Мы строим долгосрочные отношения с нашими клиентами, предлагая индивидуальные условия и гибкий подход к сотрудничеству.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card card-hover h-100">
+                    <div class="card-body text-center p-4">
+                        <i class="bi bi-recycle text-primary-custom fs-1 mb-3"></i>
+                        <h4 class="text-primary-custom">Ответственность</h4>
+                        <p class="text-muted">Заботимся об окружающей среде, используем экологичную упаковку и ответственно подходим к использованию ресурсов.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Производство -->
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 order-lg-2">
+                <h2 class="section-title text-start text-primary-custom">Современное производство</h2>
+                <p class="mb-4">Наш производственный комплекс оснащен современным европейским оборудованием, что позволяет нам:</p>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-primary-custom me-2"></i>Обеспечивать стабильно высокое качество продукции</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-primary-custom me-2"></i>Выпускать большие объемы в сжатые сроки</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-primary-custom me-2"></i>Сохранять натуральный вкус и цвет продуктов</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-primary-custom me-2"></i>Соблюдать все санитарные нормы и стандарты</li>
+                </ul>
+            </div>
+            <div class="col-lg-6 order-lg-1">
+                <div class="production-image text-center">
+                    <i class="bi bi-gear-fill bear-icon-large"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="py-5 text-white hero-gradient">
+    <div class="container text-center">
+        <h2 class="brand-font mb-4">Станьте нашим партнером</h2>
+        <p class="lead mb-4">Присоединяйтесь к числу успешных компаний, которые уже работают с нами</p>
+        <a href="#contact" class="btn btn-light btn-lg fw-bold text-primary-custom me-3">
+            <i class="bi bi-telephone me-2"></i>Связаться с нами
+        </a>
+        <a href="{% url 'core:product_list' %}" class="btn btn-outline-light btn-lg">
+            <i class="bi bi-box-seam me-2"></i>Смотреть каталог
+        </a>
+    </div>
+</section>
+{% endblock %}
