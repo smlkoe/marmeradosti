@@ -1,0 +1,164 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Корзина - Мармерадости{% endblock %}
+
+{% block content %}
+<!-- Хлебные крошки -->
+<nav aria-label="breadcrumb" class="bg-pink-light py-3">
+    <div class="container">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="{% url 'core:home' %}" class="text-decoration-none">Главная</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'core:product_list' %}" class="text-decoration-none">Каталог</a></li>
+            <li class="breadcrumb-item active">Корзина</li>
+        </ol>
+    </div>
+</nav>
+
+<!-- Корзина -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h1 class="display-5 fw-bold brand-font text-primary-custom">Корзина заказа</h1>
+                <p class="lead text-muted">Ваш список товаров для оптового заказа</p>
+            </div>
+        </div>
+
+        {% if cart_items %}
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Список товаров -->
+                <div class="card shadow-sm">
+                    <div class="card-header bg-pink-light">
+                        <h5 class="card-title mb-0 text-primary-custom">
+                            <i class="bi bi-cart3 me-2"></i>Товары в корзине ({{ cart.total_quantity }} шт.)
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        {% for item in cart_items %}
+                        <div class="cart-item row align-items-center py-3 border-bottom">
+                            <div class="col-md-2">
+                                {% if item.product.image %}
+                                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" 
+                                     class="img-fluid rounded" style="height: 80px; object-fit: cover;">
+                                {% else %}
+                                <div class="bg-primary-custom rounded d-flex align-items-center justify-content-center" 
+                                     style="width: 80px; height: 80px;">
+                                    <i class="bi bi-emoji-sunglasses fs-4 text-white"></i>
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-4">
+                                <h6 class="mb-1 text-primary-custom">{{ item.product.name }}</h6>
+                                <small class="text-muted">{{ item.product.category.name }}</small>
+                                <br>
+                                <small class="text-muted">Вес: {{ item.product.weight }}г</small>
+                            </div>
+                            <div class="col-md-2">
+                                <strong class="text-primary-custom">{{ item.product.price }} ₽/шт.</strong>
+                            </div>
+                            <div class="col-md-2">
+                                <span class="badge bg-primary-custom fs-6">{{ item.quantity }} шт.</span>
+                            </div>
+                            <div class="col-md-2">
+                                <strong class="text-primary-custom">{{ item.total_price }} ₽</strong>
+                                <a href="{% url 'core:cart_remove' item.product.id %}" 
+                                   class="btn btn-sm btn-outline-danger ms-2" 
+                                   onclick="return confirm('Удалить товар из корзины?')">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Кнопки управления -->
+                <div class="mt-3">
+                    <a href="{% url 'core:product_list' %}" class="btn btn-outline-primary">
+                        <i class="bi bi-arrow-left me-2"></i>Продолжить покупки
+                    </a>
+                    <a href="{% url 'core:cart_clear' %}" class="btn btn-outline-danger ms-2"
+                       onclick="return confirm('Очистить всю корзину?')">
+                        <i class="bi bi-trash me-2"></i>Очистить корзину
+                    </a>
+                </div>
+            </div>
+
+            <!-- Итоги -->
+            <div class="col-lg-4 mt-4 mt-lg-0">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-pink-light">
+                        <h5 class="card-title mb-0 text-primary-custom">
+                            <i class="bi bi-receipt me-2"></i>Итоги заказа
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Товаров:</span>
+                            <strong>{{ cart.total_quantity }} шт.</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span class="fs-5">Общая сумма:</span>
+                            <strong class="fs-5 text-primary-custom">{{ cart.total_price }} ₽</strong>
+                        </div>
+                        
+                        <button type="button" class="btn btn-primary-custom w-100 mb-2" data-bs-toggle="modal" data-bs-target="#orderModal">
+                            <i class="bi bi-telephone me-2"></i>Оформить заказ
+                        </button>
+                        
+                        <small class="text-muted">
+                            <i class="bi bi-info-circle me-1"></i>
+                            Для оформления заказа с вами свяжется наш менеджер
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <!-- Пустая корзина -->
+        <div class="text-center py-5">
+            <i class="bi bi-cart-x bear-icon-large"></i>
+            <h3 class="mt-3 text-primary-custom">Корзина пуста</h3>
+            <p class="text-muted">Добавьте товары из каталога для оформления заказа</p>
+            <a href="{% url 'core:product_list' %}" class="btn btn-primary-custom mt-3">
+                <i class="bi bi-box-seam me-2"></i>Перейти в каталог
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Модальное окно оформления заказа -->
+<div class="modal fade" id="orderModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-primary-custom">Оформление заказа</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Для оформления заказа свяжитесь с нашим менеджером:</p>
+                <div class="alert alert-info">
+                    <i class="bi bi-telephone me-2"></i>
+                    <strong>+7 (999) 123-45-67</strong>
+                </div>
+                <p><strong>Состав заказа:</strong></p>
+                <ul>
+                    {% for item in cart_items %}
+                    <li>{{ item.product.name }} - {{ item.quantity }} шт. × {{ item.product.price }} ₽</li>
+                    {% endfor %}
+                </ul>
+                <p class="mb-1"><strong>Общая сумма:</strong> {{ cart.total_price }} ₽</p>
+                <p class="mb-0"><strong>Количество товаров:</strong> {{ cart.total_quantity }} шт.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                <a href="tel:+79991234567" class="btn btn-primary-custom">
+                    <i class="bi bi-telephone me-2"></i>Позвонить
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}  

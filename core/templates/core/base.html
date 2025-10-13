@@ -14,7 +14,7 @@
     
     <style>
         :root {
-            --primary-color: #dfa1e7;
+            --primary-color: #ff85a2;
             --secondary-color: #ffacc7;
             --accent-color: #ffb7c5;
             --dark-color: #ff6b93;
@@ -141,6 +141,25 @@
         .border-primary-custom {
             border-color: var(--primary-color) !important;
         }
+        
+        .cart-badge {
+            font-size: 0.7rem;
+            position: relative;
+            top: -8px;
+        }
+        
+        /* Стили для сообщений */
+        .alert-success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        
+        .alert-error {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
     </style>
     
     {% block extra_css %}{% endblock %}
@@ -158,18 +177,26 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" href="{% url 'core:home' %}">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'core:home' %}">
                             <i class="bi bi-house"></i> Главная
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'core:product_list' %}">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'product_list' %}active{% endif %}" href="{% url 'core:product_list' %}">
                             <i class="bi bi-box-seam"></i> Каталог
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'core:about' %}">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}" href="{% url 'core:about' %}">
                             <i class="bi bi-building"></i> О Компании
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'cart_detail' %}active{% endif %}" href="{% url 'core:cart_detail' %}">
+                            <i class="bi bi-cart3"></i> Корзина
+                            {% if cart and cart.total_quantity > 0 %}
+                            <span class="badge bg-warning cart-badge">{{ cart.total_quantity }}</span>
+                            {% endif %}
                         </a>
                     </li>
                     <li class="nav-item">
@@ -181,6 +208,27 @@
             </div>
         </div>
     </nav>
+
+    <!-- Сообщения -->
+    {% if messages %}
+    <div class="container mt-3">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            <div class="d-flex align-items-center">
+                {% if message.tags == 'success' %}
+                <i class="bi bi-check-circle-fill me-2"></i>
+                {% elif message.tags == 'error' %}
+                <i class="bi bi-exclamation-circle-fill me-2"></i>
+                {% else %}
+                <i class="bi bi-info-circle-fill me-2"></i>
+                {% endif %}
+                <div>{{ message }}</div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
 
     <!-- Основной контент -->
     <main>
@@ -215,6 +263,7 @@
                         <li><a href="{% url 'core:home' %}" class="text-light text-decoration-none">Главная</a></li>
                         <li><a href="{% url 'core:product_list' %}" class="text-light text-decoration-none">Каталог продукции</a></li>
                         <li><a href="{% url 'core:about' %}" class="text-light text-decoration-none">О компании</a></li>
+                        <li><a href="{% url 'core:cart_detail' %}" class="text-light text-decoration-none">Корзина</a></li>
                         <li><a href="#contact" class="text-light text-decoration-none">Контакты</a></li>
                     </ul>
                 </div>
