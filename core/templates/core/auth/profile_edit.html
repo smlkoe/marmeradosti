@@ -1,0 +1,96 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Редактирование профиля - Мармерадости{% endblock %}
+
+{% block content %}
+<!-- Хлебные крошки -->
+<nav aria-label="breadcrumb" class="bg-pink-light py-3">
+    <div class="container">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="{% url 'core:home' %}" class="text-decoration-none">Главная</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'core:profile' %}" class="text-decoration-none">Профиль</a></li>
+            <li class="breadcrumb-item active">Редактирование</li>
+        </ol>
+    </div>
+</nav>
+
+<!-- Редактирование профиля -->
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-pink-light">
+                        <h2 class="card-title mb-0 text-primary-custom text-center">
+                            <i class="bi bi-pencil me-2"></i>Редактирование профиля
+                        </h2>
+                    </div>
+                    <div class="card-body p-4">
+                        <form method="post">
+                            {% csrf_token %}
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">ФИО контактного лица</label>
+                                    {{ form.full_name }}
+                                    {% if form.full_name.errors %}
+                                    <div class="text-danger small">{{ form.full_name.errors }}</div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control" value="{{ user.email }}" disabled>
+                                    <small class="form-text text-muted">Для изменения email обратитесь к администратору</small>
+                                </div>
+                                
+                                <div class="col-12 mb-3">
+                                    <label class="form-label">Наименование организации/ИП</label>
+                                    {{ form.organization_name }}
+                                    {% if form.organization_name.errors %}
+                                    <div class="text-danger small">{{ form.organization_name.errors }}</div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">ИНН</label>
+                                    {{ form.inn }}
+                                    {% if form.inn.errors %}
+                                    <div class="text-danger small">{{ form.inn.errors }}</div>
+                                    {% endif %}
+                                    <small class="form-text text-muted">10 или 12 цифр</small>
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Телефон</label>
+                                    {{ form.phone_number }}
+                                    {% if form.phone_number.errors %}
+                                    <div class="text-danger small">{{ form.phone_number.errors }}</div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-12 mb-4">
+                                    <label class="form-label">Должность</label>
+                                    {{ form.position }}
+                                    {% if form.position.errors %}
+                                    <div class="text-danger small">{{ form.position.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-primary-custom">
+                                    <i class="bi bi-check-circle me-2"></i>Сохранить изменения
+                                </button>
+                                <a href="{% url 'core:profile' %}" class="btn btn-outline-secondary">
+                                    <i class="bi bi-arrow-left me-2"></i>Отмена
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

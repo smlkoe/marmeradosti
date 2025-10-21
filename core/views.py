@@ -1,7 +1,13 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.urls import reverse
+from .forms import CustomUserCreationForm, CustomAuthenticationForm, ProfileEditForm
 from .models import Product, Category, Cart, CartItem
+
+# Получаем кастомную модель пользователя
+User = get_user_model()
 
 def home(request):
     """Главная страница"""
@@ -9,7 +15,7 @@ def home(request):
     categories = Category.objects.all()
     context = {
         'products': products,
-        'categories': categories
+        'categories': categories,
     }
     return render(request, 'core/home.html', context)
 
@@ -91,4 +97,93 @@ def cart_clear(request):
         cart.items.all().delete()
         messages.success(request, 'Корзина очищена')
     
-    return redirect('core:cart_detail')                
+    return redirect('core:cart_detail')
+
+# ФУНКЦИИ АУТЕНТИФИКАЦИИ
+def register_view(request):
+    """Регистрация нового пользователя"""
+    if request.user.is_authenticated:
+        return redirect('core:profile')
+    
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            
+            # Автоматический вход после регистрации
+            login(request, user)
+            
+            messages.success(
+                request, 
+                f'Добро пожаловать, {user.full_name}! Ваш аккаунт успешно создан.'
+            )
+            return redirect('core:profile')
+    else:
+        form = CustomUserCreationForm()
+    
+    return render(request, 'core/auth/register.html', {'form': form})
+
+def login_view(request):
+    """Авторизация пользователя"""
+    if request.user.is_authenticated:
+        return redirect('core:profile')
+    
+    if request.method == 'POST':
+        form = CustomAuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            
+            if user is not None:
+                login(request, user)
+                messages.success(request, f'Добро пожаловать, {user.full_name}!')
+                
+                # Перенаправляем на страницу, с которой пришел пользователь
+                next_url = request.GET.get('next', 'core:profile')
+                return redirect(next_url)
+    else:
+        form = CustomAuthenticationForm()
+    
+    return render(request, 'core/auth/login.html', {'form': form})
+
+def logout_view(request):
+    """Выход из системы"""
+    logout(request)
+    messages.success(request, 'Вы успешно вышли из системы.')
+    return redirect('core:home')
+
+@login_required
+def profile_view(request):
+    """Профиль пользователя"""
+    user_orders = []  # Здесь позже добавим историю заказов
+    
+    context = {
+        'user': request.user,
+        'user_orders': user_orders,
+    }
+    return render(request, 'core/auth/profile.html', context)
+
+@login_required
+def profile_edit_view(request):
+    """Редактирование профиля с использованием формы"""
+    if request.method == 'POST':
+        form = ProfileEditForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Профиль успешно обновлен!')
+            return redirect('core:profile')
+    else:
+        form = ProfileEditForm(instance=request.user)
+    
+    return render(request, 'core/auth/profile_edit.html', {'form': form})
+
+# Контекстный процессор для корзины
+def get_user_cart(request):
+    """Получает корзину текущего пользователя для контекста"""
+    if request.user.is_authenticated:
+        try:
+            return Cart.objects.get(user=request.user, is_active=True)
+        except Cart.DoesNotExist:
+            return None
+    return None

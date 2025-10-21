@@ -1,11 +1,11 @@
 from .models import Cart
 
 def cart(request):
-    """
-    Контекст-процессор для отображения корзины на всех страницах
-    """
+    """Добавляет корзину в контекст всех шаблонов"""
     if request.user.is_authenticated:
-        cart = Cart.objects.filter(user=request.user, is_active=True).first()
-        if cart:
+        try:
+            cart = Cart.objects.get(user=request.user, is_active=True)
             return {'cart': cart}
+        except Cart.DoesNotExist:
+            return {'cart': None}
     return {'cart': None}
