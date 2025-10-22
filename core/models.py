@@ -12,7 +12,7 @@ class CustomUser(AbstractUser):
         verbose_name='groups',
         blank=True,
         help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.',
-        related_name='customuser_set',  # ← ДОБАВЬТЕ ЭТУ СТРОКУ
+        related_name='customuser_set',
         related_query_name='user',
     )
     user_permissions = models.ManyToManyField(
@@ -20,7 +20,7 @@ class CustomUser(AbstractUser):
         verbose_name='user permissions',
         blank=True,
         help_text='Specific permissions for this user.',
-        related_name='customuser_set',  # ← ДОБАВЬТЕ ЭТУ СТРОКУ
+        related_name='customuser_set',
         related_query_name='user',
     )
     
@@ -102,7 +102,13 @@ class Category(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=200, verbose_name="Название мармелада")
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name="Категория")
+    category = models.ForeignKey(
+        Category, 
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name="Категория"
+    )
     description = models.TextField(verbose_name="Описание продукта")
     weight = models.PositiveIntegerField(help_text="Указывается в граммах", verbose_name="Вес упаковки")
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Оптовая цена (за упаковку)")
@@ -145,8 +151,17 @@ class Cart(models.Model):
 
 class CartItem(models.Model):
     """Элемент корзины - конкретный товар"""
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='items', verbose_name="Корзина")
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name="Товар")
+    cart = models.ForeignKey(
+        Cart, 
+        on_delete=models.CASCADE, 
+        related_name='items', 
+        verbose_name="Корзина"
+    )
+    product = models.ForeignKey(
+        Product, 
+        on_delete=models.CASCADE,
+        verbose_name="Товар"
+    )
     quantity = models.PositiveIntegerField(default=1, verbose_name="Количество")
     added_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата добавления")
 
@@ -160,4 +175,4 @@ class CartItem(models.Model):
     class Meta:
         verbose_name = "Элемент корзины"
         verbose_name_plural = "Элементы корзины"
-        unique_together = ['cart', 'product']  # Чтобы товар не повторялся в корзине
+        unique_together = ['cart', 'product']
