@@ -40,14 +40,16 @@ def get_cart(request):
         return cart
     return None
 
-@login_required
 def cart_add(request, product_id):
     """Добавление товара в корзину"""
+    if not request.user.is_authenticated:
+        messages.info(request, 'Для добавления товаров в корзину необходимо авторизоваться')
+        return redirect('core:login')  # ← Редирект на наш login URL
+    
     product = get_object_or_404(Product, id=product_id)
     cart = get_cart(request)
     
     if cart:
-        # Пытаемся найти товар в корзине
         cart_item, created = CartItem.objects.get_or_create(
             cart=cart,
             product=product,
@@ -55,19 +57,19 @@ def cart_add(request, product_id):
         )
         
         if not created:
-            # Если товар уже был в корзине - увеличиваем количество
             cart_item.quantity += 1
             cart_item.save()
             
         messages.success(request, f'Товар "{product.name}" добавлен в корзину')
-    else:
-        messages.error(request, 'Для добавления в корзину необходимо авторизоваться')
     
     return redirect('core:product_list')
 
-@login_required
 def cart_remove(request, product_id):
     """Удаление товара из корзины"""
+    if not request.user.is_authenticated:
+        messages.info(request, 'Для управления корзиной необходимо авторизоваться')
+        return redirect('core:login')  # ← Редирект на наш login URL
+    
     product = get_object_or_404(Product, id=product_id)
     cart = get_cart(request)
     
@@ -77,9 +79,26 @@ def cart_remove(request, product_id):
     
     return redirect('core:cart_detail')
 
+def cart_clear(request):
+    """Полная очистка корзины"""
+    if not request.user.is_authenticated:
+        messages.info(request, 'Для управления корзиной необходимо авторизоваться')
+        return redirect('core:login')  # ← Редирект на наш login URL
+    
+    cart = get_cart(request)
+    if cart:
+        cart.items.all().delete()
+        messages.success(request, 'Корзина очищена')
+    
+    return redirect('core:cart_detail')
 @login_required
 def cart_detail(request):
     """Страница просмотра корзины"""
+    # Проверяем авторизацию пользователя
+    if not request.user.is_authenticated:
+        return render(request, 'core/cart_empty_unauthorized.html')
+    
+    # Для авторизованных пользователей показываем корзину
     cart = get_cart(request)
     cart_items = CartItem.objects.filter(cart=cart) if cart else []
     

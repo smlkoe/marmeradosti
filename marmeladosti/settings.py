@@ -137,3 +137,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'core.CustomUser'
+# Authentication settings
+LOGIN_REDIRECT_URL = 'core:profile'
+LOGOUT_REDIRECT_URL = 'core:home'
+LOGIN_URL = 'core:login'  # ← ВАЖНО: указываем имя URL из нашего приложения

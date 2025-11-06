@@ -1,0 +1,74 @@
+/* Базовые стили */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #fffafb;
+    line-height: 1.6;
+    color: var(--text-dark);
+}
+
+/* Навигация */
+.navbar-brand {
+    font-size: 1.8rem;
+    color: white !important;
+}
+
+/* Основной контент */
+main {
+    min-height: calc(100vh - 200px);
+}
+
+/* Футер */
+footer {
+    margin-top: auto;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1.5rem;
+    }
+    
+    .hero-gradient h1 {
+        font-size: 2rem;
+    }
+    
+    .feature-icon {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .feature-icon i {
+        font-size: 1.5rem;
+    }
+}
+
+/* Утилитарные классы */
+.text-shadow {
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.border-radius-custom {
+    border-radius: var(--border-radius);
+}
+
+.shadow-custom {
+    box-shadow: var(--box-shadow);
+}
+
+.transition-all {
+    transition: all 0.3s ease;
+}
+.btn-outline-primary-custom {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+.btn-outline-primary-custom:hover {
+    background-color: var(--primary-color);
+    color: white;
+}

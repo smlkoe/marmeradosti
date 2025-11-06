@@ -1,0 +1,76 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Корзина - Мармерадости{% endblock %}
+
+{% block content %}
+<!-- Хлебные крошки -->
+<nav aria-label="breadcrumb" class="bg-pink-light py-3">
+    <div class="container">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="{% url 'core:home' %}" class="text-decoration-none">Главная</a></li>
+            <li class="breadcrumb-item active">Корзина</li>
+        </ol>
+    </div>
+</nav>
+
+<!-- Сообщение для неавторизованных пользователей -->
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-sm text-center">
+                    <div class="card-header bg-pink-light">
+                        <h2 class="card-title mb-0 text-primary-custom">
+                            <i class="bi bi-cart-x me-2"></i>Корзина недоступна
+                        </h2>
+                    </div>
+                    <div class="card-body p-5">
+                        <div class="feature-icon mx-auto mb-4">
+                            <i class="bi bi-person-lock"></i>
+                        </div>
+                        
+                        <h3 class="text-primary-custom mb-3">Требуется авторизация</h3>
+                        <p class="lead text-muted mb-4">
+                            Для доступа к корзине и оформления заказов необходимо авторизоваться на сайте.
+                        </p>
+
+                        <div class="row g-4 justify-content-center">
+                            <div class="col-md-5">
+                                <div class="card card-hover h-100">
+                                    <div class="card-body">
+                                        <i class="bi bi-box-arrow-in-right text-primary-custom fs-1 mb-3"></i>
+                                        <h5 class="text-primary-custom">Вход для партнеров</h5>
+                                        <p class="text-muted small">Уже зарегистрированы? Войдите в свой аккаунт</p>
+                                        <a href="{% url 'core:login' %}" class="btn btn-primary-custom w-100">
+                                            Войти в аккаунт
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-5">
+                                <div class="card card-hover h-100">
+                                    <div class="card-body">
+                                        <i class="bi bi-person-plus text-primary-custom fs-1 mb-3"></i>
+                                        <h5 class="text-primary-custom">Новый партнер</h5>
+                                        <p class="text-muted small">Еще нет аккаунта? Зарегистрируйтесь для сотрудничества</p>
+                                        <a href="{% url 'core:register' %}" class="btn btn-outline-primary-custom w-100">
+                                            Зарегистрироваться
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <a href="{% url 'core:product_list' %}" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-2"></i>Вернуться в каталог
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
