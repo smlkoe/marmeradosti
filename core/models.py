@@ -110,6 +110,7 @@ class Product(models.Model):
         verbose_name="Категория"
     )
     description = models.TextField(verbose_name="Описание продукта")
+    composition = models.TextField(verbose_name="Состав", blank=True, help_text="Перечислите ингредиенты")  # ← НОВОЕ ПОЛЕ
     weight = models.PositiveIntegerField(help_text="Указывается в граммах", verbose_name="Вес упаковки")
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Оптовая цена (за упаковку)")
     image = models.ImageField(upload_to='products/', blank=True, verbose_name="Изображение")

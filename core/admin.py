@@ -62,7 +62,7 @@ class CategoryAdmin(admin.ModelAdmin):
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'category', 'price', 'weight', 'is_active')
     list_filter = ('category', 'is_active')
-    search_fields = ('name', 'description')
+    search_fields = ('name', 'description','composition')
     actions = ['delete_selected_products']
     
     def delete_selected_products(self, request, queryset):

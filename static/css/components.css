@@ -193,3 +193,34 @@
     font-size: 2rem;
     margin-right: 10px;
 }
+/* Стили для кнопок фильтра */
+.filter-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.filter-btn {
+    border: 2px solid var(--primary-color);
+    background: transparent;
+    color: var(--primary-color);
+    padding: 8px 16px;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+    background: var(--primary-color);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.filter-btn .badge {
+    background: white;
+    color: var(--dark-color);
+}

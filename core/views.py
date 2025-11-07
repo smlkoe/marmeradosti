@@ -25,9 +25,50 @@ def about(request):
 
 def product_list(request):
     """Страница со списком всех продуктов"""
-    products = Product.objects.filter(is_active=True)
-    context = {'products': products}
+    category_id = request.GET.get('category')
+    
+    if category_id:
+        products = Product.objects.filter(category_id=category_id, is_active=True)
+        try:
+            current_category = Category.objects.get(id=category_id)
+        except Category.DoesNotExist:
+            current_category = None
+    else:
+        products = Product.objects.filter(is_active=True)
+        current_category = None
+    
+    categories = Category.objects.all()
+    
+    context = {
+        'products': products,
+        'categories': categories,
+        'current_category': current_category,
+    }
     return render(request, 'core/product_list.html', context)
+
+def category_products(request, category_id):
+    """Страница товаров конкретной категории"""
+    category = get_object_or_404(Category, id=category_id)
+    products = Product.objects.filter(category=category, is_active=True)
+    categories = Category.objects.all()
+    
+    context = {
+        'products': products,
+        'categories': categories,
+        'current_category': category,
+    }
+    return render(request, 'core/product_list.html', context)
+
+def product_detail(request, product_id):
+    """Детальная страница товара"""
+    product = get_object_or_404(Product, id=product_id, is_active=True)
+    categories = Category.objects.all()
+    
+    context = {
+        'product': product,
+        'categories': categories,
+    }
+    return render(request, 'core/product_detail.html', context)
 
 # ФУНКЦИИ КОРЗИНЫ
 def get_cart(request):
@@ -44,12 +85,13 @@ def cart_add(request, product_id):
     """Добавление товара в корзину"""
     if not request.user.is_authenticated:
         messages.info(request, 'Для добавления товаров в корзину необходимо авторизоваться')
-        return redirect('core:login')  # ← Редирект на наш login URL
+        return redirect('core:login')
     
     product = get_object_or_404(Product, id=product_id)
     cart = get_cart(request)
     
     if cart:
+        # Пытаемся найти товар в корзине
         cart_item, created = CartItem.objects.get_or_create(
             cart=cart,
             product=product,
@@ -57,10 +99,49 @@ def cart_add(request, product_id):
         )
         
         if not created:
+            # Если товар уже был в корзине - увеличиваем количество
             cart_item.quantity += 1
             cart_item.save()
             
         messages.success(request, f'Товар "{product.name}" добавлен в корзину')
+    else:
+        messages.error(request, 'Для добавления в корзину необходимо авторизоваться')
+    
+    # Возвращаем на ту же страницу, откуда пришел пользователь
+    referer = request.META.get('HTTP_REFERER')
+    if referer:
+        return redirect(referer)
+    return redirect('core:product_list')
+
+def cart_add_with_quantity(request, product_id):
+    """Добавление товара в корзину с указанием количества"""
+    if not request.user.is_authenticated:
+        messages.info(request, 'Для добавления товаров в корзину необходимо авторизоваться')
+        return redirect('core:login')
+    
+    if request.method == 'POST':
+        quantity = int(request.POST.get('quantity', 1))
+        product = get_object_or_404(Product, id=product_id)
+        cart = get_cart(request)
+        
+        if cart and quantity > 0:
+            # Пытаемся найти товар в корзине
+            cart_item, created = CartItem.objects.get_or_create(
+                cart=cart,
+                product=product,
+                defaults={'quantity': quantity}
+            )
+            
+            if not created:
+                # Если товар уже был в корзине - увеличиваем количество
+                cart_item.quantity += quantity
+                cart_item.save()
+                
+            messages.success(request, f'Товар "{product.name}" ({quantity} шт.) добавлен в корзину')
+        else:
+            messages.error(request, 'Ошибка при добавлении товара в корзину')
+        
+        return redirect('core:product_detail', product_id=product_id)
     
     return redirect('core:product_list')
 
@@ -68,7 +149,7 @@ def cart_remove(request, product_id):
     """Удаление товара из корзины"""
     if not request.user.is_authenticated:
         messages.info(request, 'Для управления корзиной необходимо авторизоваться')
-        return redirect('core:login')  # ← Редирект на наш login URL
+        return redirect('core:login')
     
     product = get_object_or_404(Product, id=product_id)
     cart = get_cart(request)
@@ -79,19 +160,6 @@ def cart_remove(request, product_id):
     
     return redirect('core:cart_detail')
 
-def cart_clear(request):
-    """Полная очистка корзины"""
-    if not request.user.is_authenticated:
-        messages.info(request, 'Для управления корзиной необходимо авторизоваться')
-        return redirect('core:login')  # ← Редирект на наш login URL
-    
-    cart = get_cart(request)
-    if cart:
-        cart.items.all().delete()
-        messages.success(request, 'Корзина очищена')
-    
-    return redirect('core:cart_detail')
-@login_required
 def cart_detail(request):
     """Страница просмотра корзины"""
     # Проверяем авторизацию пользователя
@@ -108,9 +176,12 @@ def cart_detail(request):
     }
     return render(request, 'core/cart_detail.html', context)
 
-@login_required
 def cart_clear(request):
     """Полная очистка корзины"""
+    if not request.user.is_authenticated:
+        messages.info(request, 'Для управления корзиной необходимо авторизоваться')
+        return redirect('core:login')
+    
     cart = get_cart(request)
     if cart:
         cart.items.all().delete()
