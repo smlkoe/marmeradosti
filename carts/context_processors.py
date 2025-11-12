@@ -1,6 +1,7 @@
+# carts/context_processors.py
 from .models import Cart
 
-def cart(request):
+def cart_context(request):
     """Добавляет корзину в контекст всех шаблонов"""
     if request.user.is_authenticated:
         try:

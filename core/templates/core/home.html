@@ -11,7 +11,7 @@
                 <h1 class="display-4 fw-bold mb-4 brand-font">Сладкий успех вашего бизнеса начинается здесь</h1>
                 <p class="lead mb-4">Более 50 видов премиального мармелада от производителя. Натуральные ингредиенты, конкурентные цены и индивидуальный подход к каждому клиенту.</p>
                 <div class="d-flex flex-wrap gap-3">
-                    <a href="{% url 'core:product_list' %}" class="btn btn-light btn-lg fw-bold text-primary-custom">
+                    <a href="{% url 'goods:product_list' %}" class="btn btn-light btn-lg fw-bold text-primary-custom">
                         <i class="bi bi-box-seam me-2"></i>Смотреть каталог
                     </a>
                     <a href="#contact" class="btn btn-outline-light btn-lg">
@@ -88,6 +88,11 @@
                                 <small class="text-muted">Вес: {{ product.weight }}г</small>
                                 <span class="badge bg-primary-custom">{{ product.category.name }}</span>
                             </div>
+                            <div class="d-grid mt-3">
+                                <a href="{% url 'goods:product_detail' product.id %}" class="btn btn-primary-custom btn-sm">
+                                    <i class="bi bi-eye me-1"></i>Подробнее
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -103,7 +108,7 @@
         </div>
         
         <div class="text-center mt-5">
-            <a href="{% url 'core:product_list' %}" class="btn btn-primary-custom btn-lg">
+            <a href="{% url 'goods:product_list' %}" class="btn btn-primary-custom btn-lg">
                 <i class="bi bi-grid-3x3-gap me-2"></i>Весь каталог
             </a>
         </div>

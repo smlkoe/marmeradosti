@@ -10,7 +10,7 @@
     <div class="container">
         <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item"><a href="{% url 'core:home' %}" class="text-decoration-none">Главная</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'core:product_list' %}" class="text-decoration-none">Каталог</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'goods:product_list' %}" class="text-decoration-none">Каталог</a></li>
             {% if current_category %}
             <li class="breadcrumb-item active">{{ current_category.name }}</li>
             {% else %}
@@ -54,14 +54,14 @@
                     <div class="card-body">
                         <div class="d-flex flex-wrap gap-2">
                             <!-- Кнопка "Все товары" -->
-                            <a href="{% url 'core:product_list' %}" 
+                            <a href="{% url 'goods:product_list' %}" 
                                class="btn {% if not current_category %}btn-primary-custom{% else %}btn-outline-primary-custom{% endif %}">
                                 <i class="bi bi-grid-3x3 me-2"></i>Все товары
                             </a>
                             
                             <!-- Кнопки категорий -->
                             {% for category in categories %}
-                            <a href="{% url 'core:category_products' category.id %}" 
+                            <a href="{% url 'goods:category_products' category.id %}" 
                                class="btn {% if current_category.id == category.id %}btn-primary-custom{% else %}btn-outline-primary-custom{% endif %}">
                                 {{ category.name }}
                             </a>
@@ -101,7 +101,7 @@
                 {% if user.is_authenticated %}
                 <div class="card shadow-sm border-warning">
                     <div class="card-body text-center py-3">
-                        <a href="{% url 'core:cart_detail' %}" class="text-decoration-none text-dark">
+                        <a href="{% url 'carts:cart_detail' %}" class="text-decoration-none text-dark">
                             <i class="bi bi-cart3 fs-4 text-warning"></i>
                             <span class="ms-2 fw-bold">Моя корзина</span>
                             {% if cart and cart.total_quantity > 0 %}
@@ -138,7 +138,7 @@
                             В каталоге пока нет товаров.
                             {% endif %}
                         </p>
-                        <a href="{% url 'core:product_list' %}" class="btn btn-primary-custom">
+                        <a href="{% url 'goods:product_list' %}" class="btn btn-primary-custom">
                             <i class="bi bi-arrow-left me-2"></i>Вернуться ко всем товарам
                         </a>
                     </div>
@@ -180,7 +180,7 @@
                                 
                                 <div class="d-grid">
                                     {% if product.is_active %}
-                                    <a href="{% url 'core:product_detail' product.id %}" class="btn btn-primary-custom">
+                                    <a href="{% url 'goods:product_detail' product.id %}" class="btn btn-primary-custom">
                                         <i class="bi bi-cart-plus me-1"></i>Купить
                                     </a>
                                     {% else %}
@@ -212,7 +212,7 @@
                                 <small class="text-muted">Готовы оформить заказ?</small>
                             </div>
                             <div class="col-md-4 text-md-end">
-                                <a href="{% url 'core:cart_detail' %}" class="btn btn-warning btn-lg">
+                                <a href="{% url 'carts:cart_detail' %}" class="btn btn-warning btn-lg">
                                     <i class="bi bi-cart3 me-2"></i>Перейти в корзину
                                 </a>
                             </div>

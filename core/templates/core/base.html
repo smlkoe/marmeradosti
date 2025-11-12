@@ -38,7 +38,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'product_list' %}active{% endif %}" href="{% url 'core:product_list' %}">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'product_list' %}active{% endif %}" href="{% url 'goods:product_list' %}">
                             <i class="bi bi-box-seam"></i> Каталог
                         </a>
                     </li>
@@ -48,7 +48,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'cart_detail' %}active{% endif %}" href="{% url 'core:cart_detail' %}">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'cart_detail' %}active{% endif %}" href="{% url 'carts:cart_detail' %}">
                             <i class="bi bi-cart3"></i> Корзина
                             {% if user.is_authenticated and cart and cart.total_quantity > 0 %}
                             <span class="badge bg-warning cart-badge">{{ cart.total_quantity }}</span>
@@ -84,12 +84,12 @@
                             </li>
                             <li><hr class="dropdown-divider my-1"></li>
                             <li>
-                                <a class="dropdown-item" href="{% url 'core:profile' %}">
+                                <a class="dropdown-item" href="{% url 'users:profile' %}">
                                     <i class="bi bi-person me-2"></i>Профиль
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="{% url 'core:cart_detail' %}">
+                                <a class="dropdown-item" href="{% url 'carts:cart_detail' %}">
                                     <i class="bi bi-cart3 me-2"></i>Корзина
                                     {% if cart and cart.total_quantity > 0 %}
                                     <span class="badge bg-primary-custom float-end">{{ cart.total_quantity }}</span>
@@ -97,13 +97,13 @@
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="{% url 'core:profile_edit' %}">
+                                <a class="dropdown-item" href="{% url 'users:profile_edit' %}">
                                     <i class="bi bi-pencil me-2"></i>Редактировать профиль
                                 </a>
                             </li>
                             <li><hr class="dropdown-divider my-1"></li>
                             <li>
-                                <a class="dropdown-item text-danger" href="{% url 'core:logout' %}">
+                                <a class="dropdown-item text-danger" href="{% url 'users:logout' %}">
                                     <i class="bi bi-box-arrow-right me-2"></i>Выйти
                                 </a>
                             </li>
@@ -112,12 +112,12 @@
                     {% else %}
                     <!-- Для неавторизованных пользователей -->
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'core:login' %}">
+                        <a class="nav-link" href="{% url 'users:login' %}">
                             <i class="bi bi-box-arrow-in-right me-1"></i>Войти
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn btn-outline-light ms-2" href="{% url 'core:register' %}">
+                        <a class="btn btn-outline-light ms-2" href="{% url 'users:register' %}">
                             <i class="bi bi-person-plus me-1"></i>Регистрация
                         </a>
                     </li>
@@ -180,14 +180,14 @@
                     <h5 class="mb-4">Быстрые ссылки</h5>
                     <ul class="list-unstyled">
                         <li class="mb-2"><a href="{% url 'core:home' %}" class="text-light text-decoration-none">Главная</a></li>
-                        <li class="mb-2"><a href="{% url 'core:product_list' %}" class="text-light text-decoration-none">Каталог продукции</a></li>
+                        <li class="mb-2"><a href="{% url 'goods:product_list' %}" class="text-light text-decoration-none">Каталог продукции</a></li>
                         <li class="mb-2"><a href="{% url 'core:about' %}" class="text-light text-decoration-none">О компании</a></li>
-                        <li class="mb-2"><a href="{% url 'core:cart_detail' %}" class="text-light text-decoration-none">Корзина</a></li>
+                        <li class="mb-2"><a href="{% url 'carts:cart_detail' %}" class="text-light text-decoration-none">Корзина</a></li>
                         {% if not user.is_authenticated %}
-                        <li class="mb-2"><a href="{% url 'core:login' %}" class="text-light text-decoration-none">Вход для партнеров</a></li>
-                        <li class="mb-2"><a href="{% url 'core:register' %}" class="text-light text-decoration-none">Регистрация</a></li>
+                        <li class="mb-2"><a href="{% url 'users:login' %}" class="text-light text-decoration-none">Вход для партнеров</a></li>
+                        <li class="mb-2"><a href="{% url 'users:register' %}" class="text-light text-decoration-none">Регистрация</a></li>
                         {% else %}
-                        <li class="mb-2"><a href="{% url 'core:profile' %}" class="text-light text-decoration-none">Личный кабинет</a></li>
+                        <li class="mb-2"><a href="{% url 'users:profile' %}" class="text-light text-decoration-none">Личный кабинет</a></li>
                         {% endif %}
                         <li class="mb-2"><a href="#contact" class="text-light text-decoration-none">Контакты</a></li>
                     </ul>

@@ -1,3 +1,4 @@
+# users/forms.py
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import get_user_model
@@ -8,7 +9,6 @@ User = get_user_model()
 class CustomUserCreationForm(UserCreationForm):
     """Форма регистрации для B2B клиентов"""
     
-    # Определяем choices здесь, а не берем из модели
     USER_TYPE_CHOICES = (
         ('individual', 'Физическое лицо'),
         ('ip', 'Индивидуальный предприниматель (ИП)'),
@@ -115,21 +115,3 @@ class ProfileEditForm(forms.ModelForm):
             'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
             'position': forms.TextInput(attrs={'class': 'form-control'}),
         }
-
-class CartAddProductForm(forms.Form):
-    """Форма для добавления товара в корзину"""
-    quantity = forms.IntegerField(
-        min_value=1,
-        max_value=100,
-        initial=1,
-        widget=forms.NumberInput(attrs={
-            'class': 'form-control', 
-            'style': 'width: 80px',
-            'min': '1'
-        })
-    )
-    update = forms.BooleanField(
-        required=False,
-        initial=False,
-        widget=forms.HiddenInput
-    )

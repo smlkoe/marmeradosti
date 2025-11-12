@@ -29,19 +29,19 @@
                     </div>
                     <div class="card-body">
                         <div class="list-group list-group-flush">
-                            <a href="{% url 'core:profile' %}" class="list-group-item list-group-item-action active">
+                            <a href="{% url 'users:profile' %}" class="list-group-item list-group-item-action active">
                                 <i class="bi bi-person me-2"></i>Общая информация
                             </a>
-                            <a href="{% url 'core:profile_edit' %}" class="list-group-item list-group-item-action">
+                            <a href="{% url 'users:profile_edit' %}" class="list-group-item list-group-item-action">
                                 <i class="bi bi-pencil me-2"></i>Редактировать профиль
                             </a>
-                            <a href="{% url 'core:cart_detail' %}" class="list-group-item list-group-item-action">
+                            <a href="{% url 'carts:cart_detail' %}" class="list-group-item list-group-item-action">
                                 <i class="bi bi-cart3 me-2"></i>Моя корзина
                                 {% if cart and cart.total_quantity > 0 %}
                                 <span class="badge bg-primary-custom float-end">{{ cart.total_quantity }}</span>
                                 {% endif %}
                             </a>
-                            <a href="{% url 'core:logout' %}" class="list-group-item list-group-item-action text-danger">
+                            <a href="{% url 'users:logout' %}" class="list-group-item list-group-item-action text-danger">
                                 <i class="bi bi-box-arrow-right me-2"></i>Выйти
                             </a>
                         </div>
@@ -106,7 +106,7 @@
                         </div>
                         
                         <div class="mt-4">
-                            <a href="{% url 'core:profile_edit' %}" class="btn btn-primary-custom">
+                            <a href="{% url 'users:profile_edit' %}" class="btn btn-primary-custom">
                                 <i class="bi bi-pencil me-2"></i>Редактировать профиль
                             </a>
                         </div>
